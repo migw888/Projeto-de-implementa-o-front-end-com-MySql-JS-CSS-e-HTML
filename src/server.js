@@ -1,10 +1,20 @@
 import "dotenv/config";
 import express from "express";
 import mysql from "mysql2/promise";
+import path from "path";    
+import { fileURLToPath } from "url"; 
+
 
 const port = 3000;
 const app = express();
 app.use(express.json());
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(__dirname));
+
 
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
