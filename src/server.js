@@ -53,7 +53,7 @@ app.get("/users", async (req, res) => {
         res.status(200).json(rows[0])
     }
     catch (erro) {
-        console.error("erro ao listar usuario")
+       console.error("erro ao listar usuario:", erro)
         res.status(500).json({ msg: "Erro ao listar usuario" })
     }
 })
@@ -66,7 +66,7 @@ app.delete("/users/:id", async (req, res) => {
             [id]
         );
         
-        if(rows[0].affectedRows == 0){
+        if(result.affectedRows == 0){
             throw new Error("Erro ao deletar usuario")
         }
 
@@ -87,7 +87,7 @@ app.put("/users/:id", async (req, res) => {
         const cpf = req.body.cpf;
         const apelido = req.body.apelido ?? null;
 
-        const rows = await pool.query("UPDATEs user SET nome = ?, email = ?, apelido = ?, cpf = ?  WHERE id = ?",
+        const rows = await pool.query("UPDATE user SET nome = ?, email = ?, apelido = ?, cpf = ?  WHERE id = ?",
             [nome, email, apelido, cpf, id])
 
         res.status(200).json({ msg: "usuario atualizado" });
